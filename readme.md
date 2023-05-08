@@ -18,7 +18,19 @@ To run the app on your local machine, follow these steps:
 3. Run `npm install` to install dependencies
 4. Run `npm start` to start the app
 
-## Usage
+## Dependencies
+
+This app uses the following dependencies:
+
+- React Native
+- Expo
+- React Navigation
+- AsyncStorage
+- Expo Gyroscope
+- React Native Paper
+- He
+
+# Usage
 
 ### Creating a Deck
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Gyroscope } from 'expo-sensors';
 
 const Quiz = ({ route, navigation }) => {
   const [deck, setDeck] = useState(null);
@@ -9,6 +10,7 @@ const Quiz = ({ route, navigation }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [correctCards, setCorrectCards] = useState([]);
   const [incorrectCards, setIncorrectCards] = useState([]);
+  const [gyroData, setGyroData] = useState({});
 
   const handleShowAnswer = () => {
     setShowAnswer(true);
@@ -38,6 +40,17 @@ const Quiz = ({ route, navigation }) => {
     loadDeck();
   }, [route.params.deckId]);
 
+
+  useEffect(() => {
+    const subscribe = Gyroscope.addListener(gyroData => {
+      setGyroData(gyroData);
+      if (gyroData.y > 1) {
+        setShowAnswer(true);
+      }
+    });
+    return () => subscribe && subscribe.remove();
+  }, []);
+
   if (!deck) {
     return <Text>Loading...</Text>;
   }
@@ -63,9 +76,9 @@ const Quiz = ({ route, navigation }) => {
       <Text style={styles.cardNumber}>{`Card ${currentCard + 1} of ${deck.flashcards.length}`}</Text>
       <Text style={styles.question}>{showAnswer ? currentFlashcard.answer : currentFlashcard.question}</Text>
       {!showAnswer && (
-        <TouchableRipple onPress={handleShowAnswer}>
-          <Text style={styles.showAnswerButton}>Show Answer</Text>
-        </TouchableRipple>
+        <Button mode="contained" onPress={handleShowAnswer}>
+          Show Answer
+        </Button>
       )}
       {showAnswer && (
         <View style={styles.answerButtonsContainer}>
@@ -77,9 +90,6 @@ const Quiz = ({ route, navigation }) => {
           </Button>
         </View>
       )}
-      <Button mode="contained" style={styles.button} onPress={() => setCurrentCard(currentCard + 1)} disabled={!showAnswer}>
-        Next
-      </Button>
     </View>
   );
 };

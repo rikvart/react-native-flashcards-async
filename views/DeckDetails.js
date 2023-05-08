@@ -26,9 +26,6 @@ const DeckDetails = ({ route, navigation }) => {
     loadDeck();
   }, [route.params.deckId]);
 
-  if (!deck) {
-    return <Text>Loading...</Text>;
-  }
 
   return (
     <View style={styles.container}>

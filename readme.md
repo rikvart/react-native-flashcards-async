@@ -29,6 +29,7 @@ This app uses the following dependencies:
 - Expo Gyroscope
 - React Native Paper
 - He
+- Axios
 
 # Usage
 
